@@ -1,0 +1,33 @@
+const divs = document.querySelectorAll('div[data-testid="price-default"]')
+divs.forEach(div => {
+  const original = div.querySelector('[data-testid="price-original"]')
+  const price = div.querySelector('[data-testid="price-value"]')
+  const descontoElement = div.querySelector('.sc-eXsaLi.fErFMt')
+  if (original && price && descontoElement) {
+    const valueOriginal = parseFloat(original.textContent.replace(/^R\$ ?/, '').replace(/\./g, '').replace(/,/, '.'))
+    const valuePrice = parseFloat(price.textContent.replace(/^R\$ ?/, '').replace(/\./g, '').replace(/,/, '.'))
+    const valueDesconto = valueOriginal - valuePrice
+    const formatter = new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', minimumFractionDigits: 2,})
+    descontoElement.innerHTML = `(${formatter.format(valueDesconto)} de <strong>desconto</strong>)`
+    const floatDesconto = document.querySelector('.sc-fqkvVR.lkyyeb')
+    floatDesconto.innerHTML = `(${formatter.format(valueDesconto)} de <strong>desconto</strong>)`
+    floatDesconto.style.color = 'rgb(89, 192, 11)'
+  }
+})
+
+const showPrice = document.querySelector('.sc-fqkvVR.diFZiC')
+showPrice.style.color = 'rgb(0, 134, 255)'
+
+const bagButton = document.querySelector('[data-testid="bagButton"]')
+bagButton.remove()
+
+const buyButton = document.querySelector('[data-testid="buyButton"]')
+buyButton.style.backgroundColor = 'rgb(0, 134, 255)'
+
+const floatButton = document.querySelector('[data-testid="float-button"]')
+floatButton.remove()
+const clonedBuyButton = buyButton.cloneNode(true)
+const labelClonedBuyButton = clonedBuyButton.querySelector('label')
+labelClonedBuyButton.textContent = 'Comprar'
+const floatButtonDiv = document.querySelector('.sc-fqkvVR.dQuACk.sc-BGXOW.duTIoJ')
+floatButtonDiv.appendChild(clonedBuyButton)
